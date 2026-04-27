@@ -1,9 +1,10 @@
 local msg = require"mp.msg"
 local fetch = require"lib.fetch"
+local tr = require"lib.translate"
 
 local _M = {}
 _M.get_player = function(env)
-  msg.verbose[[Hello! Animedia link detected.]]
+  msg.verbose(tr[[Hello! Animedia link detected.]])
 
   local url = env.url
   env.curl_opts = env.cfg or {}
@@ -13,7 +14,7 @@ _M.get_player = function(env)
   local main_src = fetch(url, env.curl_opts) or ""
   local player_url = main_src:match([=[<iframe[^>]+src="([^"]+)"]=])
   if player_url then
-    env.title = main_src:match([=[og:title" content="([^"]+) смотреть аниме онлайн"]=])
+    env.title = main_src:match([=[og:title" content="([^"]+) смотреть онлайн"]=])
     env.url = player_url
     --- TODO: заполнить плейлист всеми эпизодами, если линк на весь сезон, а не на конкретную серию
     --- @diagnostic disable-next-line: codestyle-check
@@ -35,6 +36,13 @@ _M.get_player = function(env)
     else
       require"player.unknown".play(env)
     end
+  else
+    msg.error(tr[[No supported player URLs was found]])
+    if (main_src:match"не доступ.* для показа в России.") then
+      msg.error(tr[[This title requires proxy]])
+      os.exit(1)
+    end
+    msg.error(tr[[Maybe ytdl will handle this]])
   end
   -- mp.set_property("ytdl_hook-exclude", 'animedia')
 end

@@ -20,6 +20,7 @@ local function check_site()
 
   local sources = {
     ["^(%a+://amedia%.[^/]+/.*)"] = "animedia",
+    ["^(%a+://amd%.online/.*)"] = "animedia",
     ["^(%a+://animy%.org/.*)"] = "animy",
     ["^(%a+://[^/]+%.pvashow%.[^/]+/.*)"] = "pva",
     ["^(%a+://aser%.pro/vod/.*)"] = "direct_player",

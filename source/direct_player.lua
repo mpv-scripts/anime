@@ -6,8 +6,6 @@ _M.get_player = function(env)
 
   local url = env.url
   if url then
-    -- env.title = main_src:match([=[og:title" content="([^"]+) смотреть аниме онлайн"]=])
-    -- env.url = player_url
     --- TODO: заполнить плейлист всеми эпизодами, если линк на весь сезон, а не на конкретную серию
     if url:match"mangavost%.org" or url:match"aser%.pro" then
       require"player.vost".play(env)
